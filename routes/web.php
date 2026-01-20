@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\PeopleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,3 +47,10 @@ Route::post('/cities/store', [CityController::class, 'store'])->name('cities.sto
 Route::get('/cities/edit/{id}', [CityController::class, 'edit'])->name('cities.edit');
 Route::post('/cities/update/{id}', [CityController::class, 'update'])->name('cities.update');
 Route::get('/cities/delete/{id}', [CityController::class, 'destroy'])->name('cities.destroy');
+
+Route::get('/people', [PeopleController::class, 'index'])->name('people.index');
+Route::get('/people/create', [PeopleController::class, 'create'])->name('people.create');
+Route::post('/people/store', [PeopleController::class, 'store'])->name('people.store');
+Route::get('/people/edit/{id}', [PeopleController::class, 'edit'])->name('people.edit');
+Route::post('/people/update/{id}', [PeopleController::class, 'update'])->name('people.update');
+Route::delete('/people/delete/{id}', [PeopleController::class, 'destroy'])->name('people.destroy');
