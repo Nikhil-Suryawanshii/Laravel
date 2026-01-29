@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
-    public function create(){
-         $countries = DB::select("SELECT * FROM countries");
-         $states = DB::select("SELECT * FROM states");
-         $cities = DB::select("SELECT * FROM cities");
+    public function create()
+    {
+        $countries = DB::select("SELECT id, name FROM countries");
 
-        return view('customers.create', compact('countries','states','cities'));
+        return view('customers.create', compact('countries'));
     }
-
     public function store(Request $request){
         DB::insert(
         "INSERT INTO customers 
@@ -73,4 +71,25 @@ class CustomerController extends Controller
 
         return redirect()->route('customers.index', compact('customers'));
     }
+
+    public function getStates($countryId)
+{
+    return response()->json(
+        DB::select(
+            "SELECT id, name FROM states WHERE country_id = ?",
+            [$countryId]
+        )
+    );
 }
+
+public function getCities($stateId)
+{
+    return response()->json(
+        DB::select(
+            "SELECT id, name FROM cities WHERE state_id = ?",
+            [$stateId]
+        )
+    );
+}
+}
+

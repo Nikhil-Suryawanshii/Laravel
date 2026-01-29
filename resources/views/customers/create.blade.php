@@ -40,7 +40,7 @@
                             <!-- Country -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="country_id" class="form-select">
+                                <select name="country_id" id="country" class="form-select">
                                     <option value="">Select Country</option>
                                     @foreach($countries as $country)
                                         <option value="{{ $country->id }}">
@@ -53,27 +53,17 @@
                             <!-- State -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">State</label>
-                                <select name="state_id" class="form-select">
+                             <select name="state_id" id="state" class="form-select" disabled>
                                     <option value="">Select State</option>
-                                    @foreach($states as $state)
-                                        <option value="{{ $state->id }}">
-                                            {{ $state->name }}
-                                        </option>
-                                    @endforeach
                                 </select>
                             </div>
 
                             <!-- City -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="city_id" class="form-select">
-                                    <option value="">Select City</option>
-                                    @foreach($cities as $city)
-                                        <option value="{{ $city->id }}">
-                                            {{ $city->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                             <select name="city_id" id="city" class="form-select" disabled>
+                                <option value="">Select City</option>
+                            </select>
                             </div>
 
                         </div>
@@ -96,3 +86,56 @@
     </div>
 </div>
 @endsection
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const country = document.getElementById('country');
+    const state = document.getElementById('state');
+    const city = document.getElementById('city');
+
+    country.addEventListener('change', function () {
+        let countryId = this.value;
+
+        state.innerHTML = '<option value="">Select State</option>';
+        city.innerHTML = '<option value="">Select City</option>';
+        city.disabled = true;
+
+        if (!countryId) {
+            state.disabled = true;
+            return;
+        }
+
+        fetch(`/get-states/${countryId}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(item => {
+                    state.innerHTML +=
+                        `<option value="${item.id}">${item.name}</option>`;
+                });
+                state.disabled = false;
+            });
+    });
+
+    state.addEventListener('change', function () {
+        let stateId = this.value;
+
+        city.innerHTML = '<option value="">Select City</option>';
+
+        if (!stateId) {
+            city.disabled = true;
+            return;
+        }
+
+        fetch(`/get-cities/${stateId}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(item => {
+                    city.innerHTML +=
+                        `<option value="${item.id}">${item.name}</option>`;
+                });
+                city.disabled = false;
+            });
+    });
+
+});
+</script>

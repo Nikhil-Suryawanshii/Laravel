@@ -26,6 +26,8 @@ Route::post('/customers/store', [CustomerController::class, 'store'])->name('cus
 Route::get('/customers/edit/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
 Route::post('/customers/update/{id}', [CustomerController::class, 'update'])->name('customers.update');
 Route::delete('/customers/delete/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+Route::get('/get-states/{countryId}', [CustomerController::class, 'getStates']);
+Route::get('/get-cities/{stateId}', [CustomerController::class, 'getCities']);
 
 Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
 Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
