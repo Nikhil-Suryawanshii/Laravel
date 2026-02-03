@@ -8,25 +8,25 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
-    // public function create()
-    // {
-    //     $countries = DB::select("SELECT id, name FROM countries");
-
-    //     return view('customers.create', compact('countries'));
-    // }
-
     public function create()
     {
         $countries = DB::select("SELECT id, name FROM countries");
-        $states = DB::select("SELECT id, name, country_id FROM states");
-        $cities = DB::select("SELECT id, name, state_id FROM cities");
 
-        return view('customers.create', compact('countries', 'states', 'cities'));
+        return view('customers.create', compact('countries'));
     }
+
+    // public function create()
+    // {
+    //     $countries = DB::select("SELECT id, name FROM countries");
+    //     $states = DB::select("SELECT id, name, country_id FROM states");
+    //     $cities = DB::select("SELECT id, name, state_id FROM cities");
+
+    //     return view('customers.create', compact('countries', 'states', 'cities'));
+    // }
 
     public function store(Request $request){
         DB::insert(
-        "INSERT INTO customers 
+        "INSERT INTO customers
         (name,email,phone,country_id,state_id,city_id,created_at,updated_at)
         VALUES (?,?,?,?,?,?,NOW(),NOW())",
         [
@@ -44,7 +44,7 @@ class CustomerController extends Controller
 
     public function edit($id){
         $customers= DB::selectOne(
-    "SELECT * FROM customers WHERE id = ?", 
+    "SELECT * FROM customers WHERE id = ?",
     [$id]
 );
 
@@ -57,7 +57,7 @@ class CustomerController extends Controller
 
     public function index(){
         $customers = DB::select("
-                    SELECT customers.*, 
+                    SELECT customers.*,
                         countries.name AS country,
                         states.name AS state,
                         cities.name AS city

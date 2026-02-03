@@ -56,3 +56,5 @@ Route::post('/people/store', [PeopleController::class, 'store'])->name('people.s
 Route::get('/people/edit/{id}', [PeopleController::class, 'edit'])->name('people.edit');
 Route::post('/people/update/{id}', [PeopleController::class, 'update'])->name('people.update');
 Route::delete('/people/delete/{id}', [PeopleController::class, 'destroy'])->name('people.destroy');
+Route::get('/get-states/{countryId}', [PeopleController::class, 'getStates']);
+Route::get('/get-cities/{stateId}', [PeopleController::class, 'getCities']);

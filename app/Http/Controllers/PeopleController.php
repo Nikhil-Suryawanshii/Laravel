@@ -63,9 +63,20 @@ class PeopleController extends Controller
     }
 
     public function update(Request $request, $id){
-        $people= DB:: update('UPDATE people set name=?, email=?, phone=? where id=?', [$request->name, $request->email, $request->phone, $id]);
+        DB::update(
+        "UPDATE people SET name=?, email=?, phone=?, country_id=?, state_id=?, city_id=? WHERE id=?",
+        [
+            $request->name,
+            $request->email,
+            $request->phone,
+            $request->country_id,
+            $request->state_id,
+            $request->city_id,
+            $id
+        ]
+    );
 
-        return redirect()->route('people.index', compact('people'));
+    return redirect()->route('people.index');
     }
 
     public function destroy($id){
@@ -73,4 +84,26 @@ class PeopleController extends Controller
 
         return redirect()->route('people.index', compact('people'));
     }
+
+    // AJAX - Get States by Country
+public function getStates($country_id)
+{
+    $states = DB::select(
+        "SELECT id, name FROM states WHERE country_id = ?",
+        [$country_id]
+    );
+
+    return response()->json($states);
+}
+
+// AJAX - Get Cities by State
+public function getCities($state_id)
+{
+    $cities = DB::select(
+        "SELECT id, name FROM cities WHERE state_id = ?",
+        [$state_id]
+    );
+
+    return response()->json($cities);
+}
 }
