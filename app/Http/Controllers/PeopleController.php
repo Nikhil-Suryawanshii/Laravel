@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PeopleController extends Controller
 {
@@ -16,8 +17,47 @@ class PeopleController extends Controller
         return view('people.create', compact('countries','states','cities'));
     }
 
-    public function store(Request $request){
-        DB::insert(
+    // public function store(Request $request){
+    //     DB::insert(
+    //     "INSERT INTO people
+    //     (name,email,phone,country_id,state_id,city_id,created_at,updated_at)
+    //     VALUES (?,?,?,?,?,?,NOW(),NOW())",
+    //     [
+    //         $request->name,
+    //         $request->email,
+    //         $request->phone,
+    //         $request->country_id,
+    //         $request->state_id,
+    //         $request->city_id
+    //     ]
+    // );
+
+    // return redirect()->route('people.index');
+    // }
+
+
+
+public function store(Request $request)
+{
+    // ✅ Validate incoming data
+    $validator = Validator::make($request->all(), [
+        'name'       => 'required|string|max:255',
+        'email'      => 'required|email',
+        'phone'      => 'nullable|string|max:20',
+        'country_id' => 'required|integer',
+        'state_id'   => 'required|integer',
+        'city_id'    => 'required|integer',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    // ✅ Insert data
+    DB::insert(
         "INSERT INTO people
         (name,email,phone,country_id,state_id,city_id,created_at,updated_at)
         VALUES (?,?,?,?,?,?,NOW(),NOW())",
@@ -31,14 +71,20 @@ class PeopleController extends Controller
         ]
     );
 
-    return redirect()->route('people.index');
-    }
+    // ✅ JSON Response
+    return response()->json([
+        'status' => true,
+        'message' => 'Person created successfully'
+    ], 201);
+}
 
     public function edit($id){
+
         $people= DB::selectOne(
     "SELECT * FROM people WHERE id = ?",
     [$id]
 );
+
 
         $countries = DB::select("SELECT * FROM countries");
     $states = DB::select("SELECT * FROM states");
