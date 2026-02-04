@@ -11,11 +11,11 @@ use App\Http\Controllers\PeopleController;
 // Route::delete('api/people/{id}', [ApiPeopleController::class, 'destroy']); // DELETE
 
 
-Route::get('api/people', [PeopleController::class, 'index'])->name('people.index');
-Route::get('api/people/create', [PeopleController::class, 'create'])->name('people.create');
-Route::post('api/people/store', [PeopleController::class, 'store'])->name('people.store');
-Route::get('api/people/edit/{id}', [PeopleController::class, 'edit'])->name('people.edit');
-Route::post('api/people/update/{id}', [PeopleController::class, 'update'])->name('people.update');
-Route::delete('api/people/delete/{id}', [PeopleController::class, 'destroy'])->name('people.destroy');
-Route::get('api/get-states/{countryId}', [PeopleController::class, 'getStates']);
-Route::get('api/get-cities/{stateId}', [PeopleController::class, 'getCities']);
+Route::get('people', [PeopleController::class, 'index'])->name('people.index');
+Route::get('people/create', [PeopleController::class, 'create'])->name('people.create');
+Route::post('people/store', [PeopleController::class, 'store'])->name('people.store');
+Route::get('people/edit/{id}', [PeopleController::class, 'edit'])->name('people.edit');
+Route::post('people/update/{id}', [PeopleController::class, 'update'])->name('people.update');
+Route::delete('people/delete/{id}', [PeopleController::class, 'destroy'])->name('people.destroy');
+Route::get('get-states/{countryId}', [PeopleController::class, 'getStates']);
+Route::get('get-cities/{stateId}', [PeopleController::class, 'getCities']);
